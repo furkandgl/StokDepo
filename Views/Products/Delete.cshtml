@@ -1,0 +1,17 @@
+@model StokDepo.Models.Product
+@{
+    ViewData["Title"] = "Ürün Sil";
+}
+
+<h1>Ürün Sil</h1>
+
+<div class="alert alert-warning mt-3">
+    <strong>@Model.Name</strong> ürününü silmek istediğine emin misin?
+</div>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

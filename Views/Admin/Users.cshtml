@@ -1,0 +1,54 @@
+@model IEnumerable<StokDepo.Models.AdminUserViewModel>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning mt-3">@TempData["Error"]</div>
+}
+
+
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+}
+
+<h1>Kullanıcı Yönetimi</h1>
+<p class="text-muted">Admin rolünü kullanıcılar arasında değiştirebilirsin.</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Kullanıcı Adı</th>
+            <th class="text-end">İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+   @foreach (var u in Model)
+    {
+        var isAdmin = u.Roles.Contains("Admin");
+
+        <tr>
+            <td>@u.Email</td>
+            <td>@u.UserName</td>
+            <td>
+                @if (isAdmin)
+                {
+                    <span class="badge bg-danger">Admin</span>
+                }
+                @if (u.Roles.Contains("User"))
+                {
+                    <span class="badge bg-secondary ms-1">User</span>
+                }
+            </td>
+            <td class="text-end">
+                <form asp-action="ToggleAdmin" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="userId" value="@u.Id" />
+                    <button class="btn btn-sm btn-outline-primary" type="submit">
+                        Admin Yetkisini Aç/Kapat
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

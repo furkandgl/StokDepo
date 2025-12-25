@@ -1,0 +1,59 @@
+@model IEnumerable<StokDepo.Models.StockMovement>
+
+@{
+    ViewData["Title"] = "Stok Hareketleri";
+}
+
+<h1>Stok Hareketleri</h1>
+<p class="text-muted">Son 50 stok giriş/çıkış kaydı.</p>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="sd-empty mt-4">
+        <div class="sd-empty__icon">
+            <i class="bi bi-arrow-left-right fs-3"></i>
+        </div>
+        <div class="sd-empty__title">Henüz stok hareketi yok</div>
+        <div class="sd-empty__text">
+            Ürün giriş/çıkış yaptıkça tüm hareketleri burada göreceksin.
+        </div>
+
+        <a class="btn btn-outline-primary"
+           asp-controller="Products"
+           asp-action="Index">
+            Ürünlere Git
+        </a>
+    </div>
+}
+else
+{
+    <div class="sd-table mt-3">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Ürün</th>
+                    <th>Değişim</th>
+                    <th>Yapan</th>
+                    <th>Not</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var m in Model)
+            {
+                // 2D badge class (soft)
+                var badgeClass = m.QuantityChange >= 0 ? "badge-soft-success" : "badge-soft-danger";
+                var text = m.QuantityChange >= 0 ? $"+{m.QuantityChange}" : m.QuantityChange.ToString();
+
+                <tr>
+                    <td>@m.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                    <td class="fw-semibold">@m.Product?.Name</td>
+                    <td><span class="badge @badgeClass badge-pill">@text</span></td>
+                    <td>@m.PerformedBy</td>
+                    <td class="text-muted">@m.Note</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,229 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+    Layout = "/Areas/Identity/Pages/Account/_AuthLayout.cshtml";
+}
+
+
+<div class="card auth-card w-100" style="max-width: 980px;">
+    <div class="row g-0">
+        <div class="col-lg-5 d-none d-lg-flex auth-side p-4">
+            <div class="d-flex flex-column w-100">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <i class="bi bi-box-seam fs-3"></i>
+                    <div>
+                        <div class="fw-semibold fs-5">StokDepo</div>
+                        <div class="auth-muted small">Stok yönetimi • Dashboard • Rapor</div>
+                    </div>
+                </div>
+
+                <div class="mt-2">
+                    <div class="fw-semibold mb-2">Hızlı başlangıç</div>
+                    <div class="d-flex flex-column gap-2 small">
+                        <div><i class="bi bi-check2-circle me-2"></i>Ürünleri görüntüle ve filtrele</div>
+                        <div><i class="bi bi-check2-circle me-2"></i>Stok hareketlerini takip et</div>
+                        <div><i class="bi bi-check2-circle me-2"></i>Dashboard üzerinden durumu gör</div>
+                    </div>
+                </div>
+
+                <div class="mt-auto small auth-muted">
+                    <i class="bi bi-shield-lock me-1"></i> Güvenli kimlik doğrulama
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 p-4 p-md-5">
+            <div class="mb-4">
+                <h1 class="h3 mb-1">Hesap oluştur ✨</h1>
+                <div class="text-muted">StokDepo’yu kullanmak için kayıt ol.</div>
+            </div>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="needs-validation" novalidate>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 d-none" role="alert" id="valSummary"></div>
+
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">E-posta</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="ornek@mail.com" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">Şifre</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="••••••••" id="pwd" />
+                        <button class="btn btn-outline-secondary" type="button" id="togglePwd" aria-label="Şifreyi göster/gizle">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    <div id="capsWarning1" class="small text-warning mt-2 d-none">
+    <i class="bi bi-capslock-fill me-1"></i> Caps Lock açık görünüyor.
+</div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.ConfirmPassword" class="form-label">Şifre (Tekrar)</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="••••••••" id="pwd2" />
+                        <button class="btn btn-outline-secondary" type="button" id="togglePwd2" aria-label="Şifreyi göster/gizle">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                    <div id="capsWarning2" class="small text-warning mt-2 d-none">
+    <i class="bi bi-capslock-fill me-1"></i> Caps Lock açık görünüyor.
+</div>
+
+                </div>
+
+                <button id="registerSubmit" type="submit" class="btn btn-primary btn-auth w-100 py-2">
+                    <i class="bi bi-person-plus me-1"></i> Kayıt Ol
+                </button>
+
+                <div class="text-center mt-3">
+                    <span class="text-muted small">Zaten hesabın var mı?</span>
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="small fw-semibold text-decoration-none">
+                        Giriş yap
+                    </a>
+                </div>
+
+                <div class="text-center mt-4 text-muted small">
+                    © @DateTime.Now.Year • StokDepo
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const form = document.getElementById('registerForm');
+            const submitBtn = document.getElementById('registerSubmit');
+
+            const vs = document.getElementById('valSummary');
+            const email = document.querySelector('input[name="Input.Email"]');
+
+            // Validation summary boşsa gizle
+            if (vs && vs.textContent.trim().length > 0) {
+                vs.classList.remove('d-none');
+            }
+
+            // Email normalize (trim + lowercase)
+            if (email) {
+                email.addEventListener('blur', () => {
+                    email.value = (email.value || '').trim().toLowerCase();
+                });
+            }
+
+            // Toggle (şifre göster/gizle)
+            function wireToggle(btnId, inputId) {
+                const btn = document.getElementById(btnId);
+                const input = document.getElementById(inputId);
+                if (!btn || !input) return;
+
+                btn.addEventListener('click', () => {
+                    const isPwd = input.type === 'password';
+                    input.type = isPwd ? 'text' : 'password';
+                    btn.innerHTML = isPwd ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+                });
+            }
+            wireToggle('togglePwd', 'pwd');
+            wireToggle('togglePwd2', 'pwd2');
+
+            // Caps Lock (sağlam)
+            function wireCaps(inputId, warningId) {
+                const input = document.getElementById(inputId);
+                const warn = document.getElementById(warningId);
+                if (!input || !warn) return;
+
+                let assumedCapsOn = false;
+
+                const show = () => warn.classList.remove('d-none');
+                const hide = () => warn.classList.add('d-none');
+
+                const updateFromModifier = (e) => {
+                    if (e && e.getModifierState) {
+                        const caps = e.getModifierState('CapsLock');
+                        assumedCapsOn = !!caps;
+                        assumedCapsOn ? show() : hide();
+                    }
+                };
+
+                const onKey = (e) => {
+                    if (e.key === 'CapsLock') {
+                        assumedCapsOn = !assumedCapsOn;
+                        assumedCapsOn ? show() : hide();
+                        return;
+                    }
+                    updateFromModifier(e);
+                };
+
+                input.addEventListener('keydown', onKey);
+                input.addEventListener('keyup', updateFromModifier);
+
+                document.addEventListener('keydown', (e) => {
+                    if (document.activeElement === input) onKey(e);
+                });
+                document.addEventListener('keyup', (e) => {
+                    if (document.activeElement === input) updateFromModifier(e);
+                });
+
+                input.addEventListener('focus', () => hide());
+                input.addEventListener('blur', () => hide());
+            }
+
+            wireCaps('pwd', 'capsWarning1');
+            wireCaps('pwd2', 'capsWarning2');
+
+            // Submit: spinner + form lock
+            if (form && submitBtn) {
+                const originalHtml = submitBtn.innerHTML;
+                const caps1 = document.getElementById('capsWarning1');
+                const caps2 = document.getElementById('capsWarning2');
+
+                form.addEventListener('submit', () => {
+                    if (form.checkValidity && !form.checkValidity()) return;
+
+                    // caps uyarılarını kapat (form kilitlenecek)
+                    if (caps1) caps1.classList.add('d-none');
+                    if (caps2) caps2.classList.add('d-none');
+
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML =
+                        '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Kayıt oluşturuluyor...';
+
+                    // 🔥 Form değerleri + antiforgery token POST'a dahil olsun diye
+// alanları 0ms sonra kilitle ve token'ı ASLA disable etme
+window.setTimeout(() => {
+    const tokenInput = form.querySelector('input[name="__RequestVerificationToken"]');
+
+    form.querySelectorAll('input, button, select, textarea').forEach(el => {
+        if (el === submitBtn) return;                 // submit zaten disabled
+        if (tokenInput && el === tokenInput) return;  // token ASLA disabled olmaz
+        el.disabled = true;
+    });
+}, 0);
+
+
+                    // failsafe: hata ile geri dönülürse
+                    window.setTimeout(() => {
+                        form.querySelectorAll('input, button, select, textarea').forEach(el => el.disabled = false);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalHtml;
+                    }, 8000);
+                });
+            }
+        })();
+    </script>
+}

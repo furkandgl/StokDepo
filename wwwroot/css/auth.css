@@ -1,0 +1,36 @@
+.auth-body{
+  background: radial-gradient(1200px circle at 20% 10%, rgba(13,110,253,.18), transparent 40%),
+              radial-gradient(1000px circle at 80% 30%, rgba(25,135,84,.16), transparent 45%),
+              #0b1220;
+}
+
+.auth-card{
+  border: 0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  background: rgba(255,255,255,.95);
+  backdrop-filter: blur(10px);
+}
+
+.auth-side{
+  background: linear-gradient(135deg, rgba(13,110,253,.95), rgba(13,110,253,.65));
+  color: #fff;
+}
+
+.auth-side .badge{
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.25);
+}
+
+.form-control, .form-select{
+  border-radius: .9rem;
+}
+
+.btn-auth{
+  border-radius: .9rem;
+}
+
+.auth-muted{
+  color: rgba(255,255,255,.8);
+}

@@ -1,0 +1,603 @@
+/* ===== Theme variables ===== */
+:root{
+  --bg: #f6f7fb;
+  --text: #101828;
+  --muted: #667085;
+
+  --card-bg: #ffffff;
+  --card-border: rgba(16,24,40,.10);
+
+  /* Skeleton shimmer */
+  --sk-1: rgba(0,0,0,.06);
+  --sk-2: rgba(0,0,0,.12);
+
+  /* Overlay */
+  --overlay: rgba(0,0,0,.15);
+
+  --focus-ring: rgba(37,140,251,.35);
+  --sk-border: rgba(16,24,40,.08);
+
+    /* 2D System */
+  --sd-radius: 16px;
+  --sd-radius-sm: 12px;
+  --sd-shadow: 0 12px 35px rgba(0,0,0,.10);
+  --sd-shadow-sm: 0 8px 20px rgba(0,0,0,.08);
+}
+
+/* 2D List (list-group polish) */
+.sd-list .list-group-item{
+  border-color: var(--card-border) !important;
+  background: transparent;
+}
+
+.sd-list__item{
+  padding-top: 14px;
+  padding-bottom: 14px;
+  transition: background .15s ease;
+}
+
+.sd-list__item:hover{
+  background: rgba(13,110,253,.06);
+}
+
+
+html, body{
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Dark theme */
+.theme-dark{
+  --bg: #0b1220;
+  --text: #e7eaf0;
+  --muted: #a9b0c1;
+
+  --card-bg: #0f172a;
+  --card-border: rgba(255,255,255,.10);
+
+  --sk-1: rgba(255,255,255,.06);
+  --sk-2: rgba(255,255,255,.12);
+
+  --overlay: rgba(0,0,0,.45);
+
+  --focus-ring: rgba(37,140,251,.55);
+  --sk-border: rgba(255,255,255,.08);
+
+  --sd-shadow: 0 18px 45px rgba(0,0,0,.35);
+  --sd-shadow-sm: 0 10px 22px rgba(0,0,0,.28);
+
+}
+
+.text-muted { color: var(--muted) !important; }
+
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   2D Micro: Focus Ring Polish
+   ========================= */
+
+/* Mouse click / genel focus: çok minimal */
+.btn:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus{
+  box-shadow: 0 0 0 .10rem color-mix(in srgb, var(--focus-ring) 65%, transparent);
+}
+
+/* Keyboard focus: net ve premium */
+.btn:focus-visible,
+.btn-link.nav-link:focus-visible,
+.form-control:focus-visible,
+.form-check-input:focus-visible{
+  box-shadow: 0 0 0 .18rem var(--focus-ring);
+}
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.auth-body { margin-bottom: 0 !important; }
+
+/* Soft row backgrounds */
+.soft-warning { background-color: rgba(255, 193, 7, .12) !important; }
+.soft-danger  { background-color: rgba(220, 53, 69, .12) !important; }
+
+/* Soft badges (Bootstrap bağımsız) */
+.badge-soft-success {
+  background-color: rgba(25, 135, 84, .15) !important;
+  color: #198754 !important;
+  border: 1px solid rgba(25, 135, 84, .35) !important;
+}
+.badge-soft-warning {
+  background-color: rgba(255, 193, 7, .18) !important;
+  color: #8a6d00 !important;
+  border: 1px solid rgba(255, 193, 7, .45) !important;
+}
+.badge-soft-danger {
+  background-color: rgba(220, 53, 69, .15) !important;
+  color: #dc3545 !important;
+  border: 1px solid rgba(220, 53, 69, .35) !important;
+}
+
+.badge-pill {
+  border-radius: 999px !important;
+  padding: .45rem .6rem !important;
+  font-weight: 600 !important;
+}
+
+/* ===== Auth Pages (Login/Register) ===== */
+.auth-bg{
+    min-height: 100vh;
+    background:
+        radial-gradient(900px circle at 10% 10%, rgba(13,110,253,.35), transparent 45%),
+        radial-gradient(800px circle at 90% 30%, rgba(255,193,7,.30), transparent 40%),
+        radial-gradient(900px circle at 50% 95%, rgba(220,53,69,.25), transparent 45%),
+        var(--bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card{
+  border-radius: 18px;
+  background: rgba(255,255,255,.92); /* fallback */
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+}
+
+
+.auth-logo{
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13,110,253,.12);
+    color: #0d6efd;
+    font-size: 28px;
+}
+
+.page-loading{
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
+.page-loading.is-visible{
+  opacity: 1;
+  pointer-events: all;
+}
+
+
+
+.page-loading__card{
+  min-width: 260px;
+  border-radius: 16px;
+  padding: 18px;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, rgba(0,0,0,.08));
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
+  text-align: center;
+}
+
+/* Dashboard Skeleton */
+.sk{
+  border-radius: 16px;
+  background: linear-gradient(90deg,
+    var(--sk-1) 25%,
+    var(--sk-2) 37%,
+    var(--sk-1) 63%);
+  background-size: 400% 100%;
+  animation: sk 1.2s ease-in-out infinite;
+  border: 1px solid var(--sk-border);
+}
+
+
+@keyframes sk{
+  0%{ background-position: 100% 0; }
+  100%{ background-position: 0 0; }
+}
+
+.sk-card{ height: 96px; }
+.sk-chart{ height: 320px; }
+.sk-table{ height: 240px; }
+
+/* ===== Navbar (Dark mode polish) ===== */
+.theme-dark .navbar{
+  border-bottom-color: rgba(255,255,255,.10) !important;
+  backdrop-filter: blur(10px);
+}
+
+.theme-dark .navbar .navbar-brand,
+.theme-dark .navbar .navbar-text,
+.theme-dark .navbar .nav-link{
+  color: #e7eaf0 !important;
+}
+
+.theme-dark .navbar .nav-link:hover,
+.theme-dark .navbar .nav-link:focus{
+  color: #ffffff !important;
+  opacity: .95;
+}
+
+#themeToggle{
+  border-radius: 999px;
+}
+.theme-dark #themeToggle{
+  border-color: rgba(255,255,255,.18) !important;
+}
+
+.navbar{
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.12));
+  backdrop-filter: blur(10px);
+}
+
+.theme-dark .navbar{
+  background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.18)) !important;
+}
+
+.navbar .nav-link{
+  position: relative;
+  padding: .5rem .75rem;
+  border-radius: 10px;
+  transition: background .15s ease, color .15s ease;
+}
+
+.navbar .nav-link:hover{
+  background: rgba(13,110,253,.10);
+}
+
+.navbar .nav-link.active::after{
+  content: "";
+  position: absolute;
+  left: .75rem;
+  right: .75rem;
+  bottom: .2rem;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(13,110,253,.85);
+}
+
+/* =========================
+   Navbar Premium Polish
+   ========================= */
+.sd-nav{
+  border-bottom-color: var(--card-border) !important;
+}
+
+.sd-nav .navbar-brand{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.sd-nav .nav-link{
+  position: relative;
+  border-radius: 12px;
+  padding: .5rem .75rem;
+  color: var(--text) !important;
+  transition: background .15s ease, transform .15s ease, opacity .15s ease;
+  opacity: .92;
+}
+
+.sd-nav .nav-link:hover{
+  background: rgba(13,110,253,.10);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Active: pill + underline */
+.sd-nav .nav-link.active{
+  background: rgba(13,110,253,.12);
+  opacity: 1;
+}
+
+.sd-nav .nav-link.active::after{
+  content:"";
+  position:absolute;
+  left:.75rem;
+  right:.75rem;
+  bottom:.2rem;
+  height:2px;
+  border-radius:2px;
+  background: rgba(13,110,253,.85);
+}
+
+/* Theme toggle button polish */
+.sd-iconbtn{
+  border-radius: 999px !important;
+  width: 36px;
+  height: 32px;
+  display: inline-grid;
+  place-items: center;
+}
+
+/* icon micro-anim */
+.sd-iconbtn i{
+  transition: transform .18s ease, opacity .18s ease;
+}
+.sd-iconbtn.is-anim i{
+  transform: rotate(18deg) scale(1.05);
+}
+
+/* Dark mode navbar text */
+.theme-dark .sd-nav .nav-link{
+  color: var(--text) !important;
+}
+
+
+/* =========================
+   STOKDEPO 2D DESIGN SYSTEM
+   ========================= */
+
+/* 2D Pills (mini badge) */
+.sd-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .35rem .55rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sd-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+/* 2D Table wrapper */
+.sd-table{
+  border-radius: var(--sd-radius);
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+}
+
+.sd-table .table{
+  margin-bottom: 0;
+}
+
+.sd-table .table thead th{
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border-bottom: 1px solid var(--card-border) !important;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.sd-table .table tbody tr{
+  transition: background .15s ease;
+}
+
+.sd-table .table tbody tr:hover{
+  background: rgba(13,110,253,.06);
+}
+
+
+
+/* Card (Bootstrap card üzerine premium layer) */
+.card.sd-card{
+  border-radius: var(--sd-radius);
+  border: 1px solid var(--card-border) !important;
+  background: var(--card-bg) !important;
+  box-shadow: var(--sd-shadow-sm) !important;
+  overflow: hidden;
+}
+
+.card.sd-card .card-header{
+  background: transparent !important;
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+.sd-sub{
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+/* =========================
+   2D Micro: Card Hover Depth
+   ========================= */
+.card.sd-card--hover{
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+  will-change: transform, box-shadow;
+}
+
+.card.sd-card--hover:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--sd-shadow) !important;
+  border-color: color-mix(in srgb, var(--card-border) 55%, rgba(13,110,253,.35)) !important;
+}
+
+.card.sd-card--hover:active{
+  transform: translateY(-1px);
+  box-shadow: var(--sd-shadow-sm) !important;
+}
+
+
+/* Card typography helpers */
+.sd-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+
+
+/* 2D Empty State */
+.sd-empty{
+  border-radius: var(--sd-radius);
+  border: 1px dashed var(--sd-border);
+  background: var(--sd-surface-2);
+  padding: 26px;
+  text-align: center;
+}
+
+.sd-empty__icon{
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px auto;
+  border: 1px solid var(--sd-border);
+  background: var(--sd-surface);
+  box-shadow: var(--sd-shadow-sm);
+}
+
+.sd-empty__title{
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.sd-empty__text{
+  color: var(--sd-muted);
+  margin-bottom: 14px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .card.sd-card--hover{ transition: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .btn,
+  .card.sd-card--hover{
+    transition: none !important;
+  }
+  .btn:active{
+    transform: none !important;
+  }
+}
+
+
+/* =========================
+   Premium Motion (Dashboard)
+   ========================= */
+
+.dash-enter{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .22s ease, transform .22s ease;
+  will-change: opacity, transform;
+}
+
+.dash-enter.is-ready{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger items */
+.row.dash-stagger .col-md-4{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.row.dash-stagger.is-ready .col-md-4{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.dash-stagger.is-ready .col-md-4:nth-child(1){ transition-delay: 0ms; }
+.dash-stagger.is-ready .col-md-4:nth-child(2){ transition-delay: 60ms; }
+.dash-stagger.is-ready .col-md-4:nth-child(3){ transition-delay: 120ms; }
+
+
+/* Chart soft pop */
+.dash-pop{
+  transform: scale(.985);
+  transition: transform .22s ease;
+}
+.dash-pop.is-ready{
+  transform: scale(1);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .dash-enter,
+  .dash-stagger > *,
+  .dash-pop{
+    transition-duration: 1ms !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+
+/* =========================
+   KPI Stagger (FINAL - Guaranteed)
+   ========================= */
+
+#kpiRow .col-md-4{
+  opacity: 0 !important;
+  transform: translateY(14px) !important;
+  transition: opacity .28s ease, transform .28s ease !important;
+  will-change: opacity, transform;
+}
+
+#kpiRow.is-ready .col-md-4{
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+#kpiRow.is-ready .col-md-4:nth-child(1){ transition-delay: 0ms !important; }
+#kpiRow.is-ready .col-md-4:nth-child(2){ transition-delay: 90ms !important; }
+#kpiRow.is-ready .col-md-4:nth-child(3){ transition-delay: 180ms !important; }
+
+/* =========================
+   2D Micro: Button Press
+   ========================= */
+.btn{
+  transition: transform .08s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+.btn:active{
+  transform: translateY(1px) scale(.99);
+}
+
+.btn:focus-visible{
+  box-shadow: 0 0 0 .18rem var(--focus-ring);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-primary:hover,
+.btn-outline-danger:hover{
+  filter: brightness(1.02);
+}
+
+/* =========================
+   Pagination (2D polish)
+   ========================= */
+.pagination .page-link{
+  border-radius: 12px;
+  border-color: var(--card-border);
+  color: var(--text);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+}
+
+.pagination .page-item.active .page-link{
+  background: rgba(13,110,253,.14);
+  border-color: rgba(13,110,253,.25);
+  color: var(--text);
+}
+
+.pagination .page-link:hover{
+  background: rgba(13,110,253,.08);
+}
+

@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Stok Giriş / Çıkış";
+    var products = ViewBag.Products as List<SelectListItem> ?? new();
+}
+
+<h1>Stok Giriş / Çıkış</h1>
+
+@if (TempData["Ok"] != null)
+{
+    <div class="alert alert-success">@TempData["Ok"]</div>
+}
+
+<form method="post" class="row g-3 mt-1">
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-6">
+        <label class="form-label">Ürün</label>
+        <select class="form-select" name="productId" required>
+            <option value="">Seçiniz...</option>
+            @foreach (var p in products)
+            {
+                <option value="@p.Value" selected="@p.Selected">@p.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">İşlem</label>
+        <select class="form-select" name="type" required>
+            <option value="in">Giriş (+)</option>
+            <option value="out">Çıkış (-)</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Miktar</label>
+        <input class="form-control" type="number" name="quantity" min="1" required />
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Not (opsiyonel)</label>
+        <input class="form-control" name="note" />
+    </div>
+
+    <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">Kaydet</button>
+        <a class="btn btn-secondary" asp-action="Index">Listeye Dön</a>
+    </div>
+
+    <div class="col-12">
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+</form>
