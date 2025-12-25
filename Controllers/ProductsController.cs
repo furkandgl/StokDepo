@@ -190,37 +190,42 @@ return File(encoding.GetBytes(sb.ToString()), "text/csv; charset=utf-8", "produc
         }
 
         // POST: /Products/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("Name,Category,Price,Quantity,Description")] Product product)
-        {
-            if (!ModelState.IsValid) return View(product);  
-    product.CreatedDate = DateTime.Now;
-    _context.Add(product);
-    await _context.SaveChangesAsync(); 
-
-   // İlk stok hareketi (ürün oluşturulurken)
-if (product.Quantity != 0)
+[HttpPost]
+[ValidateAntiForgeryToken]
+[Authorize(Roles = "Admin")]
+public async Task<IActionResult> Create([Bind("Name,Category,Price,Quantity,Description")] Product product)
 {
-    var performedBy = User.Identity?.Name ?? "system";
+    if (!ModelState.IsValid) return View(product);
 
-    _context.StockMovements.Add(new StockMovement
-    {
-        ProductId = product.Id,
-        QuantityChange = product.Quantity,
-        CreatedAt = DateTime.UtcNow,
-        PerformedBy = performedBy,
-        Note = $"Ürün oluşturuldu (ilk stok): +{product.Quantity}"
-    });
+    var initialQty = product.Quantity;     // kullanıcıdan gelen
+    product.Quantity = 0;                  // DB'ye ilk başta 0 yaz
+    product.CreatedDate = DateTime.Now;
 
+    _context.Products.Add(product);
     await _context.SaveChangesAsync();
-}
+
+    if (initialQty != 0)
+    {
+        var performedBy = User.Identity?.Name ?? "system";
+
+        _context.StockMovements.Add(new StockMovement
+        {
+            ProductId = product.Id,
+            QuantityChange = initialQty,
+            CreatedAt = DateTime.UtcNow,
+            PerformedBy = performedBy,
+            Note = $"Ürün oluşturuldu (ilk stok): +{initialQty}"
+        });
+
+        // Ürünün Quantity’sini de hareketle eşitle
+        product.Quantity = initialQty;
+        await _context.SaveChangesAsync();
+    }
 
     TempData["Success"] = "Ürün başarıyla eklendi.";
-
     return RedirectToAction(nameof(Index));
 }
+
 
         // GET: /Products/Edit/5
         [Authorize(Roles = "Admin")]

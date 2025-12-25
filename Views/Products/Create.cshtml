@@ -44,10 +44,29 @@
         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary">Kaydet</button>
+<button id="btnSave" type="submit" class="btn btn-primary">Kaydet</button>
     <a asp-action="Index" class="btn btn-secondary">İptal</a>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('submit', function (e) {
+            const form = e.target;
+            if (!form || form.tagName !== 'FORM') return;
+
+            const btn = form.querySelector('#btnSave');
+            if (!btn) return;
+
+            if (btn.dataset.submitted === '1') {
+                e.preventDefault();
+                return;
+            }
+
+            btn.dataset.submitted = '1';
+            btn.disabled = true;
+            btn.innerText = 'Kaydediliyor...';
+        }, true);
+    </script>
 }
